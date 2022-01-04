@@ -13,7 +13,6 @@ public class Lv1하샤드수 {
         return Integer.toString(x).chars().map(Character::getNumericValue).sum();
     }
 
-
     private int sumDigit2(int x) {
         int sum = 0;
         while(x > 0){
