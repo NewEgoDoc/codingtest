@@ -18,6 +18,7 @@ public class Lv2다음큰숫자 {
         return 0;
     }
 
+
     private int countBinary(int n) {
         int count = 0;
         String binaryNumber = Integer.toBinaryString(n);
@@ -25,6 +26,41 @@ public class Lv2다음큰숫자 {
             if(num == '1'){
                 count++;
             }
+        }
+        return count;
+    }
+
+    public int solution2(int n){
+        int bits = bitCount(n);
+        while(bitCount(++n) != bits);
+        return n;
+    }
+
+    private int bitCount(int n) {
+        return Integer.bitCount(n);
+    }
+
+    private int bitCount2(int n) { // <-시간초과
+        return (int)Integer.toBinaryString(n)
+                .chars()
+                .filter(ch -> ch == '1')
+                .count();
+    }
+    
+    private int bitCount3(int n) {
+        int count = 0;
+        while(n > 0){
+            if(n%2 ==0) count++;
+            n /= 2;
+        }
+        return count;
+    }
+
+    private int bitCount4(int n) {
+        int count = 0;
+        while(n > 0){
+            count+= n & 1;
+            n >>= 1;
         }
         return count;
     }
