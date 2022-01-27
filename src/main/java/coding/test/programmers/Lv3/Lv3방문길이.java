@@ -3,63 +3,93 @@ package coding.test.programmers.Lv3;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Lv3방문길이 {
     public int solution(String dirs){
-        HashSet<String> hs = new HashSet<>();
-        int nowX = 0;
-        int nowY = 0;
+        Set<String> set = new HashSet<>();
+
+        int x = 5;
+        int y = 5;
+        int nextX, nextY;
 
         StringBuilder sb = null;
 
         for (int i = 0; i < dirs.length(); i++) {
-            int nextX = nowX;
-            int nextY = nowY;
+            nextX = x;
+            nextY = y;
+            char direction = dirs.charAt(i);
+
             sb = new StringBuilder();
 
-            if(dirs.charAt(i) == 'U'){
+            if(direction == 'U'){
                 nextY++;
-                sb.append(nowX);
-                sb.append(nowY);
+                sb.append("(");
+                sb.append(x);
+                sb.append(",");
+                sb.append(y);
+                sb.append(")");
+                sb.append("(");
                 sb.append(nextX);
+                sb.append(",");
                 sb.append(nextY);
+                sb.append(")");
             }
 
-            if(dirs.charAt(i) == 'D'){
+            if(direction == 'D'){
                 nextY--;
+                sb.append("(");
                 sb.append(nextX);
+                sb.append(",");
                 sb.append(nextY);
-                sb.append(nowX);
-                sb.append(nowY);
+                sb.append(")");
+                sb.append("(");
+                sb.append(x);
+                sb.append(",");
+                sb.append(y);
+                sb.append(")");
             }
 
-            if(dirs.charAt(i) == 'R'){
-                nextX++;
-                sb.append(nowX);
-                sb.append(nowY);
-                sb.append(nextX);
-                sb.append(nextY);
-            }
-
-            if(dirs.charAt(i) == 'L'){
+            if(direction == 'L'){
                 nextX--;
+                sb.append("(");
+                sb.append(x);
+                sb.append(",");
+                sb.append(y);
+                sb.append(")");
+                sb.append("(");
                 sb.append(nextX);
+                sb.append(",");
                 sb.append(nextY);
-                sb.append(nowX);
-                sb.append(nowY);
+                sb.append(")");
             }
 
-            if(nextX < -5 || nextY < -5 || nextX > 5 || nextY > 5){
-                continue;
+            if(direction == 'R'){
+                nextX++;
+                sb.append("(");
+                sb.append(nextX);
+                sb.append(",");
+                sb.append(nextY);
+                sb.append(")");
+                sb.append("(");
+                sb.append(x);
+                sb.append(",");
+                sb.append(y);
+                sb.append(")");
             }
 
-            hs.add(sb.toString());
-            nowX = nextX;
-            nowY = nextY;
+            if(nextX < 0 || nextY < 0 || nextY > 10 || nextX >10) continue;
+
+            set.add(sb.toString());
+            x = nextX;
+            y = nextY;
+            
         }
-
-        return hs.size();
+        System.out.println("set = " + set);
+        return set.size();
     }
 
     @Test
@@ -68,4 +98,8 @@ public class Lv3방문길이 {
         Assertions.assertEquals(solution("LULLLLLLU"),7);
         Assertions.assertEquals(solution("LLLLLLLUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRR"),20);
     }
+
+    /*
+
+    * */
 }
