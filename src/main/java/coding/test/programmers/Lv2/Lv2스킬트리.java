@@ -12,10 +12,9 @@ public class Lv2스킬트리 {
 
     public int solution(String skill, String[] skill_trees) {
         int answer = 0;
-
-        for (String skill_tree : skill_trees) {
-            //skill_tree
-            if(isPossibleSkillTree(skill_tree,skill)){
+        for(String skill_tree: skill_trees){
+            String skillTreeNeeded = makeNecessarySkillTree(skill,skill_tree);
+            if(skill.indexOf(skillTreeNeeded) == 0){
                 answer++;
             }
         }
@@ -23,14 +22,20 @@ public class Lv2스킬트리 {
         return answer;
     }
 
-    private boolean isPossibleSkillTree(String skill_tree, String skill) {
-        Stack<Character> stack = new Stack<>();
-        for(char s: skill_tree.toCharArray()){
-            stack.add(s);
+    private String makeNecessarySkillTree(String skill, String skill_tree) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < skill_tree.length(); i++) {
+            if(isNecessarySkill(skill, skill_tree.charAt(i))) {
+                sb.append(skill_tree.charAt(i));
+            }
         }
+        return sb.toString();
+    }
 
-
-
+    private boolean isNecessarySkill(String skill, char c) {
+        for (int i = 0; i < skill.length(); i++) {
+            if(skill.charAt(i) == c) return true;
+        }
         return false;
     }
 
@@ -39,6 +44,7 @@ public class Lv2스킬트리 {
     public void test(){
         assertEquals(solution("CBD",
                 new String[]{"BACDE", "CBADF", "AECB", "BDA"}),2);
+
         assertEquals(solution("CBDK",
                 new String[]{"CB", "CXYB", "BD", "AECD", "ABC", "AEX", "CDB", "CBKD", "IJCB", "LMDK"}),4);
         assertEquals(solution("CBD",
@@ -47,5 +53,7 @@ public class Lv2스킬트리 {
                 new String[]{"AEF", "ZJW"}),2);
         assertEquals(solution("BDC",
                 new String[]{"AAAABACA"}),0);
+
+
     }
 }
