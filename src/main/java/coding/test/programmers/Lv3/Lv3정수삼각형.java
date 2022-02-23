@@ -5,30 +5,23 @@ import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Lv3정수삼각형 {
-    int max = 0;
     public int solution(int[][] triangle) {
-        max = 0;
 
-        dfs(triangle,0,0,0);
+        int[][] dp = new int[triangle.length][triangle.length];
 
-        System.out.println("max = " + max);
-        return max;
-    }
+        dp[0][0] = triangle[0][0];
 
-    private void dfs(int[][] triangle, int depth, int index, int sum) {
-        if(depth == triangle.length-1){
-            if(max < sum) {
-                max = sum;
+        for (int i = 1; i < triangle.length; i++) {
+            dp[i][0] = triangle[i][0]  + dp[i-1][0];
+            for (int j = 1; j < i+1; j++) {
+                dp[i][j] = triangle[i][j] + Math.max(dp[i -1][j - 1], dp[i -1][j]);
             }
-            return;
         }
-        System.out.println("sum = " + sum);
-
-
-        if(index - 1 >= 0)
-            dfs(triangle,depth+1,index-1,sum+triangle[depth][index]);
-        dfs(triangle,depth+1,index,sum+triangle[depth][index]);
-        dfs(triangle,depth+1,index+1,sum+triangle[depth][index]);
+        int max = 0;
+        for (int i = 0; i < triangle[triangle.length-1].length; i++) {
+            if(max < dp[dp.length -1][i]) max = dp[dp.length -1][i];
+        }
+        return max;
     }
 
     @Test

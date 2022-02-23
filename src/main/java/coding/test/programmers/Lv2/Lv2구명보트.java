@@ -25,6 +25,6 @@ public class Lv2구명보트 {
     @Test
     public void test(){
         assertEquals(solution(new int[]{70, 50, 80, 50},100),3);
-        //assertEquals(solution(new int[]{70, 80, 50},100),3);
+        assertEquals(solution(new int[]{70, 80, 50},100),3);
     }
 }
