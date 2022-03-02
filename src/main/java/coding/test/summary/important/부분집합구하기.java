@@ -5,7 +5,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class DFS {
+public class 부분집합구하기 {
 
     static boolean[] visited;
 
