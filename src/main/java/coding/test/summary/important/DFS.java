@@ -17,7 +17,7 @@ public class DFS {
         int input = Integer.parseInt(br.readLine());
 
         visited = new boolean[input + 1];
-        dfs(1,input);
+        dfs(0,input);
         bw.write(sb.toString());
         bw.flush();
         bw.close();
