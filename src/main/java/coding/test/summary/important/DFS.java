@@ -1,30 +1,68 @@
 package coding.test.summary.important;
-//class Node{
-//    int data;
-//    Node lt, rt;
-//    public Node(int val){
-//        data= val;
-//        lt = rt = null;
-//    }
-//}
+
+import java.io.*;
+import java.util.ArrayList;
 
 public class DFS {
-//    Node root;
-//    public static void main(String[] args) {
-//        DFS tree = new DFS();
-//        tree.root = new Node(1);
-//        tree.root.lt = new Node(2);
-//        tree.root.rt = new Node(3);
-//        tree.root.lt.lt = new Node(4);
-//        tree.root.lt.rt = new Node(5);
-//        System.out.println(tree.DFS(0,tree.root));
-//    }
-//
-//    private int DFS(int L, Node root) {
-//        if(root.rt == null && root.lt == null){
-//            return L;
-//        }
-//        return Math.min(DFS(L+1, root.lt),DFS(L+1, root.rt));
-//    }
+    static int N,M,answer;
+    static ArrayList<ArrayList<Integer>> graph;
+    static boolean[] visited;
+
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+        answer = 0;
+        graph = new ArrayList<>();
+
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+
+        initGraph();
+        visited = new boolean[N +1];
+        makeGraphThruInput(br, M);
+        for (int i = 0; i <= N; i++) {
+            System.out.println(graph.get(i));
+        }
+
+        dfs(1);
+
+        sb.append(answer);
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+
+    private static void dfs(int index) {
+        if(index == N){
+            answer++;
+            System.out.println(answer);
+        }
+
+        for (int i: graph.get(index)) {
+            if(!visited[i]){
+                visited[i] = true;
+                dfs(i);
+                visited[i] = false;
+            }
+        }
+    }
+
+    private static void initGraph() {
+        for (int i = 0; i <= N; i++) {
+            graph.add(new ArrayList<>());
+        }
+    }
+
+    private static void makeGraphThruInput(BufferedReader br, int M) throws IOException {
+        for (int i = 0; i < M; i++) {
+            String[] input = br.readLine().split(" ");
+            int x = Integer.parseInt(input[0]);
+            int y = Integer.parseInt(input[1]);
+            graph.get(x).add(y);
+            //graph.get(y).add(x);
+        }
+    }
 
 }
