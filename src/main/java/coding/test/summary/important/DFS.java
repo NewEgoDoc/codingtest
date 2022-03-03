@@ -28,6 +28,8 @@ public class DFS {
         dfs(1);
 
         sb.append(answer);
+        visited = new boolean[input + 1];
+        dfs(1,input);
         bw.write(sb.toString());
         bw.flush();
         bw.close();
