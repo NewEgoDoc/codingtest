@@ -18,10 +18,6 @@ public class DFS {
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
 
-<<<<<<<<< Temporary merge branch 1
-        visited = new boolean[input + 1];
-        dfs(1,input);
-=========
         initGraph();
         visited = new boolean[N +1];
         makeGraphThruInput(br, M);
@@ -32,7 +28,6 @@ public class DFS {
         dfs(1);
 
         sb.append(answer);
->>>>>>>>> Temporary merge branch 2
         bw.write(sb.toString());
         bw.flush();
         bw.close();
