@@ -58,7 +58,8 @@ public class Graph {
             int v = graph.edge[j].dest;
             int weight = graph.edge[j].weight;
             if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
-            // V-1 만큼 반복하여 모든 정점을 고려한 최단 거리를 찾았음에도 더 짧은 경로가 있다는 것은 음수의 사이클이 존재한다는 의미이다.
+            // V-1 만큼 반복하여 모든 정점을 고려한 최단 거리를 찾았음에도 더 짧은 경로가 있다는 것은
+            // 음수의 사이클이 존재한다는 의미이다.
                 System.out.println("Graph contains negative weight cycle");
                 return;// 최단경로 찾는 의미가 없음으로 종료;
             }
@@ -125,4 +126,3 @@ public class Graph {
         graph.BellmanFord(graph, 0);
     }
 }
-// Contributed by Aakash Hasija
