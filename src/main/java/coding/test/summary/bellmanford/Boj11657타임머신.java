@@ -67,31 +67,26 @@ public class Boj11657타임머신 {
     public static boolean bellmanFord() {
         dist[1] = 0; // 시작점은 0으로 초기화.
         boolean update = false;
-
         // (정점의 개수 - 1)번 동안 최단거리 초기화 작업을 반복함.
         for (int i = 1; i < N; i++) {
             update = false;
-
             // 최단거리 초기화.
             for (int j = 1; j <= N; j++) {
                 for (City city : a.get(j)) {
                     if (dist[j] == Integer.MAX_VALUE) {
                         break;
                     }
-
                     if (dist[city.end] > dist[j] + city.weight) {
                         dist[city.end] = dist[j] + city.weight;
                         update = true;
                     }
                 }
             }
-
             // 더 이상 최단거리 초기화가 일어나지 않았을 경우 반복문을 종료.
             if (!update) {
                 break;
             }
         }
-
         // (정점의 개수 - 1)번까지 계속 업데이트가 발생했을 경우
         // (정점의 개수)번도 업데이트 발생하면 음수 사이클이 일어난 것을 의미함.
         if (update) {
@@ -100,14 +95,12 @@ public class Boj11657타임머신 {
                     if (dist[i] == Integer.MAX_VALUE) {
                         break;
                     }
-
                     if (dist[city.end] > dist[i] + city.weight) {
                         return true;
                     }
                 }
             }
         }
-
         return false;
     }
 
