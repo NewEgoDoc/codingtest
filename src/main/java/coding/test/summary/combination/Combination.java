@@ -1,41 +1,43 @@
 package coding.test.summary.combination;
 
-import org.junit.Test;
-
-import java.util.Arrays;
-
 public class Combination {
-    public int solution(int n, int m, int[] arr) {
-        boolean[] visited = new boolean[n];
-        Arrays.sort(arr);
-        dfs(0,arr,visited,0,n,m);
-        return 0;
+    private int[] array;
+    private int n;
+    private int r;
+    private boolean[] visited;
+
+    private int[] result;
+
+    private int index = 0;
+    private int start = 0;
+
+    public Combination(int[] array, int r) {
+        this.array = array;
+        this.n = array.length;
+        visited = new boolean[n];
+        this.r = r;
+        this.result = new int[r];
     }
 
-    private int dfs(int start, int[] arr, boolean[] visited, int sum, int n, int m) {
-        if (m == 0) {
-            for (int i = 0; i < n; i++) {
-                if(visited[i]) System.out.print(arr[i] + " ");
+    void execute(){
+        if(index == r) {
+            System.out.print("[");
+            for (int i = 0; i < r; i++) {
+                if (i == (r - 1)) {
+                    System.out.print(result[i]);
+                    break;
+                }
+                System.out.print(result[i] + ", ");
             }
-            System.out.println();
-            return sum;
+            System.out.println("]");
+            return;
         }
-
         for (int i = start; i < n; i++) {
-            visited[i] = true;
-            dfs(i + 1, arr, visited, sum+arr[i], n, m-1);
-            visited[i] = false;
+            result[index] = array[i];
+            start = i + 1;
+            index++;
+            execute();
+            index--;
         }
-
-        return 0;
-    }
-
-    @Test
-    public void test(){
-        solution(4,2,new int[]{1,2,3,4});
-        System.out.println();
-        //solution(4,2,new int[]{1,2,3});
-        System.out.println();
-        //solution(4,4,new int[]{1,2,3});
     }
 }

@@ -4,43 +4,99 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+
+// public class Permutation {
+//
+//     private int[] array;
+//     private boolean[] visited;
+//     private int n;
+//
+//     private int r;
+//
+//     private int[] result;
+//
+//     private int index = 0;
+//
+//     public Permutation(int[] array, int r) {
+//         this.array = array;
+//         this.n = array.length;
+//         this.visited = new boolean[n];
+//         this.result = new int[n];
+//         this.r = r;
+//     }
+//
+//     void execute(){
+//         if(index == r){
+//             System.out.print("[");
+//             for (int i = 0; i < r; i++) {
+//                 if(i == (r - 1)){
+//                     System.out.print(result[i]);
+//                     break;
+//                 }
+//                 System.out.print(result[i] + ", ");
+//             }
+//             System.out.println("]");
+//         }
+//
+//         for (int i = 0; i < n; i++) {
+//             if(!visited[i]){
+//                 visited[i] = true;
+//                 result[index] = array[i];
+//                 index++;
+//                 execute();
+//                 index--;
+//                 visited[i] = false;
+//             }
+//         }
+//     }
+// }
 public class Permutation {
+	private int[] array;
+	private boolean[] visited;
+	private int n;
 
-    int[] bucket;
+	private int r;
 
-    public int solution(int n, int m, int[] arr) {
-        bucket = new int[n];
-        boolean[] visited = new boolean[n];
-        Arrays.sort(arr);
-        int sum = 0;
-        dfs(0, arr, visited, sum, n, m);
-        return 0;
-    }
+	private int[] result;
+	private int num = 0;
 
-    private void dfs(int index, int[] arr, boolean[] visited, int sum, int n, int m) {
-        if (index == m) {
-            for (int i = 0; i < m; i++) {
-                System.out.print(bucket[i] + " ");
-            }
-            System.out.println();
-            return;
-        }
+	private int index = 0;
 
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                bucket[index] = arr[i];
-                dfs(index + 1, arr, visited, sum, n, m);
-                visited[i] = false;
-            }
-        }
-    }
-    @Test
-    public void test(){
-        solution(3,1,new int[]{4,4,2});
-        System.out.println();
-        //solution(4,2,new int[]{1,2,3});
-        System.out.println();
-        //solution(4,4,new int[]{1,2,3});
-    }
+	public Permutation(int[] array, int r) {
+		this.array = array;
+		this.n = array.length;
+		this.visited = new boolean[n];
+		this.r = r;
+		this.result = new int[n];
+	}
+
+	void execute(){
+		if(index == r){
+			num++;
+			System.out.print("[");
+			for (int i = 0; i < r; i++) {
+				if(i == (r - 1)){
+					System.out.print(result[i]);
+					break;
+				}
+				System.out.print(result[i] + ", ");
+			}
+			System.out.println("]");
+		}
+
+		for (int i = 0; i < n; i++) {
+			if(!visited[i]){
+				visited[i] = true;
+				result[index] = array[i];
+				index++;
+				execute();
+				index--;
+				visited[i] = false;
+			}
+		}
+	}
+
+	public int getNum() {
+		return num;
+	}
 }
