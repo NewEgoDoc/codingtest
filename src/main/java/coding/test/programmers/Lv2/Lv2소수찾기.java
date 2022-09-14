@@ -8,51 +8,67 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Lv2소수찾기 {
-    StringBuilder sb = new StringBuilder();
-    public int solution(String numbers) {
 
-        boolean[] visited = new boolean[numbers.length()];
-        Set<Integer> possibleNums = new HashSet<>();
-        for (int i = 0; i < numbers.length(); i++) {
-            dfs(numbers, visited, 0, i+1, possibleNums);
+    StringBuilder sb = new StringBuilder();
+
+    private char[] array;
+    private boolean[] visited;
+    private char[] result;
+    private int n;
+    private int index;
+    Set<Integer> numSet;
+
+    public int solution(String numbers) {
+        numSet = new HashSet<>();
+
+        index = 0;
+        array = numbers.toCharArray();
+        n = array.length;
+        result = new char[n];
+        visited = new boolean[n];
+
+        for (int i = 1; i <= n; i++) {
+            permutation(i);
         }
 
-        System.out.println("possibleNums = " + possibleNums);
-
-        return possibleNums.size();
+        System.out.println("numSet = " + numSet);
+        return numSet.size();
     }
 
-    private void dfs(String numbers, boolean[] visited, int index, int size, Set<Integer> possibleNums) {
-        if(index == size){
-            if(isPrime(Integer.parseInt(sb.toString()))) {
-                possibleNums.add(Integer.parseInt(sb.toString()));
+    private void permutation(int r) {
+        if(index == r){
+            for (int i = 0; i < r; i++) {
+                sb.append(result[i]);
             }
+            int number = Integer.parseInt(sb.toString());
+            if(isPrimeNumber(number)) numSet.add(number);
+            sb.delete(0,n);
         }
-
-        for (int i = 0; i < numbers.length(); i++) {
+        for (int i = 0; i < n; i++) {
             if(!visited[i]){
                 visited[i] = true;
-                sb.append(numbers.charAt(i));
-                dfs(numbers,visited,index+1,size,possibleNums);
-                sb.deleteCharAt(sb.length()-1);
-                visited[i] = false;
+                result[index] = array[i];
+                index++;
+                permutation(r);
+                index--;
+                visited[i] =false;
             }
         }
-
     }
 
-    private boolean isPrime(int num){
-        if(num == 0 || num == 1) return false;
-
-        for (int i = 2; i < num; i++) {
-            if(num%i == 0) return false;
+    private boolean isPrimeNumber(int number) {
+        if(number == 0 || number == 1) return false;
+        for (int i = 2; i < number; i++) {
+            if(number % i == 0) return false;
         }
         return true;
     }
 
     @Test
-    public void test(){
-        assertEquals(solution("17"),3);
-        assertEquals(solution("011"),2);
+    void test(){
+        // solution("123");
+        solution("011");
+        // solution("001");
+        // solution("1311");
     }
 }
