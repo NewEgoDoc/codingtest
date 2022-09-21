@@ -1,11 +1,7 @@
 package coding.test.trial.no1;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,15 +18,12 @@ public class Third {
 	StringBuilder sb = new StringBuilder();
 	Map<String, Integer> map;
 
-	List<String> answerList = new ArrayList<>();
-
 	void combination(int r){
 		if(index == r){
 			Arrays.sort(result);
 			for (char c: result) sb.append(c);
 
-			if(map.get(sb.toString()) == null) map.put(sb.toString(), 1);
-			else map.put(sb.toString(), map.get(sb.toString()) + 1);
+			map.merge(sb.toString(), 1, Integer::sum);
 
 			sb.delete(0,r);
 			return;
@@ -46,35 +39,33 @@ public class Third {
 	}
 
 	public String[] solution(String[] orders, int[] course){
-		map = new HashMap<>();
-		for (String order: orders) {
-			array = order.toCharArray();
-			for (int r : course) {
-				result = new char[r];
-				start = 0;
+		Set<String> answerList = new TreeSet<>();
+
+		for (int r: course) {//2, 3, 4
+			map = new HashMap<>();
+
+			for (String order: orders) {//"XYZ", "XWY", "WXA"
+				char[] charArr = order.toCharArray();
+				Arrays.sort(charArr);//정렬 => 'X' 'Y' 'Z', 'W' 'X' 'Y', 'A' 'W' 'X'
+				array = charArr;
 				index = 0;
-				combination(r);
+				start = 0;
+				result = new char[r];
+				combination(r);//조합 찾기
 			}
 
-			// 3. 가장 많은 조합 answer에 저장
-			if (!map.isEmpty()) {
-				List<Integer> countList = new ArrayList<>(map.values());
-				int max = Collections.max(countList);
+			/* 최대값 찾기 */
+			int max = 1;
+			for(String key: map.keySet()){
+				if(map.get(key) > max) max = map.get(key);
+			}
 
-				if (max > 1)
-					for (String key : map.keySet())
-						if (map.get(key) == max)
-							answerList.add(key);
-				map.clear();
+			/* 가장 큰 값의 String 으로 set 구성 */
+			for(String key: map.keySet()){
+				if(map.get(key) == max && map.get(key) > 1) answerList.add(key);
 			}
 		}
-
-		Collections.sort(answerList);
-		String[] answer = new String[answerList.size()];
-		for (int i = 0; i < answer.length; i++)
-			answer[i] = answerList.get(i);
-
-		return answer;
+		return answerList.toArray(new String[0]);//array로 변환 then return
 	}
 
 
