@@ -13,49 +13,51 @@ public class Lv3여행경로 {
 
 	List<String> routes;
 
+	List<String> routeList;
+
+	StringBuilder sb = new StringBuilder();
+
 	public String[] solution(String[][] tickets) {
 
+		routeList = new ArrayList<>();
 		used = new boolean[tickets.length];
 		routes = new ArrayList<>();
+		routes.add("ICN");
 
-		return dfs(tickets,0);
+		dfs(tickets,0);
+
+		Collections.sort(routeList);
+
+		return routeList.get(0).split(" ");
+
 	}
 
-	private String[] dfs(String[][] tickets, int index) {
+	private void dfs(String[][] tickets, int index) {
 		if(index == tickets.length){
-			System.out.println("routes = " + routes);
-			Collections.sort(routes);
-			return routes.toArray(new String[0]);
+			for (String str: routes) {
+				sb.append(str+" ");
+			}
+			routeList.add(sb.toString());
+			sb.delete(0,sb.length());
 		}
 
 		for (int i = 0; i < tickets.length; i++) {
 			if(!used[i]){
-				if(routes.size() == 0){
+				if(routes.get(routes.size() - 1).equals(tickets[i][0])){
 					used[i] = true;
-					routes.add(tickets[i][0]);
 					routes.add(tickets[i][1]);
 					dfs(tickets,index+1);
 					routes.remove(routes.size()-1);
-					routes.remove(routes.size()-1);
 					used[i] = false;
-				} else {
-					if(routes.get(routes.size() - 1).equals(tickets[i][0])){
-						used[i] = true;
-						routes.add(tickets[i][1]);
-						dfs(tickets,index+1);
-						routes.remove(routes.size()-1);
-						used[i] = false;
-					}
 				}
 			}
 		}
 
-		return new String[0];
 	}
 
 	@Test
 	void test(){
-		// Assertions.assertArrayEquals(solution(new String[][]{{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}}),new String[]{"ICN", "JFK", "HND", "IAD"});
+		Assertions.assertArrayEquals(solution(new String[][]{{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}}),new String[]{"ICN", "JFK", "HND", "IAD"});
 		Assertions.assertArrayEquals(solution(new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}}),new String[]{"ICN", "ATL", "ICN", "SFO", "ATL", "SFO"});
 	}
 }
