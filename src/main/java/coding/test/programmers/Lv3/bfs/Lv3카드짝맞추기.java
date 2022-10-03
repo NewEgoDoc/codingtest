@@ -1,6 +1,8 @@
 package coding.test.programmers.Lv3.bfs;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
@@ -16,50 +18,69 @@ public class Lv3카드짝맞추기 {
 	public int solution(int[][] board, int r, int c) {
 		int answer = 0;
 
-		boolean[][] visited = new boolean[4][4];
-		setVisited(board, visited);
+		int[][] cBoard = copyBoard(board);
 
-		Queue<int[]> q = new LinkedList<>();
+		for (int x = 1; x <= 6; x++) {
 
-		if(board[r][c] != 0)  q.offer(new int[]{r,c});
-
-
-
-		while(!q.isEmpty()){
-			int[] now = q.poll();
+			List<int[]> list = new ArrayList<>();
 
 			for (int i = 0; i < 4; i++) {
-
-				answer++;
-
 				for (int j = 0; j < 4; j++) {
-					int nx = now[0];
-					int ny = now[1];
-
-					int x = nx + dx[i]*j;
-					int y = ny + dy[i]*j;
-
-					if(x >= 0 && y >= 0 && x <= 4 && y <= 4){
-						if(!visited[x][y] && board[x][y] > 0){
-							//stop
-
-
-						}
+					if(cBoard[i][j] == x){
+						list.add(new int[]{i,j});
 					}
+				}
+			}
+
+			//현재 위치에서 list의 첫번째 점까지의 거리 구해야함
+
+			//bfs를 통해 해당 캐릭터가 있는 위치에서 다음 '동일한' 캐릭터가 있는 위치까지의 거리 구하기
+			bfs(cBoard, list);
+
+
+
+		}
+
+
+
+		return answer;
+	}
+
+	private void bfs(int[][] cBoard, List<int[]> list) {
+		final int[] start = list.get(0);
+		final int[] end = list.get(1);
+
+		int[][] visited = new int[4][4];
+		Queue<int[]> q = new LinkedList<>();
+		q.add(start);
+
+		while (!q.isEmpty()){
+			int[] now = q.poll();
+			int x = now[0];
+			int y = now[1];
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					int nx = x + dx[i];
+					int ny = y + dy[i];
+
 				}
 			}
 
 		}
 
-		return answer;
+
+
+
 	}
 
-	private void setVisited(int[][] board, boolean[][] visited) {
+	private int[][] copyBoard(int[][] board) {
+		int[][] cBoard = new int[4][4];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if(board[i][j] == 0) visited[i][j] = true;
+				cBoard[i][j] = board[i][j];
 			}
 		}
+		return cBoard;
 	}
 
 	@Test
