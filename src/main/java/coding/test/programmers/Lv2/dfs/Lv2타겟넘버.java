@@ -21,10 +21,10 @@ public class Lv2타겟넘버 {
 			if(target == sum) return 1;
 			else return 0;
 		}
-		else{
-			return dfs(numbers,depth+1,sum+numbers[depth],target)
-				+ dfs(numbers,depth+1,sum-numbers[depth],target);
-		}
+
+		return dfs(numbers,depth+1,sum+numbers[depth],target)
+			+ dfs(numbers,depth+1,sum-numbers[depth],target);
+
 	}
 
 	public int dfs(int[] numbers, int target){
