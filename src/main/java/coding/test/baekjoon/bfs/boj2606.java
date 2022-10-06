@@ -24,7 +24,7 @@ public class boj2606 {
 			map[y][x] = 1;
 		}
 		visited = new boolean[n+1];
-		return bfs(1);
+		return dfs(1);
 	}
 
 	private int bfs(int start) {
@@ -44,6 +44,29 @@ public class boj2606 {
 					count++;
 					visited[i] = true;
 					q.offer(i);
+				}
+			}
+		}
+		return count;
+	}
+
+	private int dfs(int start) {
+
+		Stack<Integer> stack = new Stack<>();
+		visited[start] = true;
+		stack.push(start);
+
+		int count = 0;
+		while (!stack.isEmpty()){
+			Integer pop = stack.pop();
+			// System.out.println("pop = " + pop);
+			for (int i = 1; i < map.length; i++) {
+				// System.out.println("map[pop]["+i+"] = " + map[pop][i]);
+				// System.out.println("visited["+i+"] = " + visited[i]);
+				if(map[pop][i] == 1 && !visited[i]){
+					count++;
+					visited[i] = true;
+					stack.push(i);
 				}
 			}
 		}
