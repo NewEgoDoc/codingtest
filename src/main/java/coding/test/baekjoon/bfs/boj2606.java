@@ -36,10 +36,7 @@ public class boj2606 {
 		int count = 0;
 		while (!q.isEmpty()){
 			Integer pop = q.poll();
-			// System.out.println("pop = " + pop);
 			for (int i = 1; i < map.length; i++) {
-				// System.out.println("map[pop]["+i+"] = " + map[pop][i]);
-				// System.out.println("visited["+i+"] = " + visited[i]);
 				if(map[pop][i] == 1 && !visited[i]){
 					count++;
 					visited[i] = true;
@@ -59,10 +56,7 @@ public class boj2606 {
 		int count = 0;
 		while (!stack.isEmpty()){
 			Integer pop = stack.pop();
-			// System.out.println("pop = " + pop);
 			for (int i = 1; i < map.length; i++) {
-				// System.out.println("map[pop]["+i+"] = " + map[pop][i]);
-				// System.out.println("visited["+i+"] = " + visited[i]);
 				if(map[pop][i] == 1 && !visited[i]){
 					count++;
 					visited[i] = true;
@@ -75,6 +69,9 @@ public class boj2606 {
 
 	@Test
 	void test(){
+		//BFS와 DFS의 차이는 사실 상 두 방법 모두 그래프에 대한 완전 탐색 방법
 		Assertions.assertEquals(solution(7, new int[][]{{1, 2},{2, 3},{1, 5},{5, 2},{5, 6},	{4, 7}}),4);
+		//DFS는 모든 경우의 수를 탐색 - 미로 문제 같은 경우의 적합
+		//BFS는 두 지점 사이의 최단 경로를 찾는 문제에 적합
 	}
 }
