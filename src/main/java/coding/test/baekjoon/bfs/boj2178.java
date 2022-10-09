@@ -31,11 +31,11 @@ public class boj2178 {
 		q.offer(initialPoint);
 		
 		
-		int count = 0;
 		while (!q.isEmpty()) {
 			int[] now = q.poll();
 			int x = now[0];
 			int y = now[1];
+			visited[x][y] = true;
 
 			for (int i = 0; i < 4; i++) {
 				int nx = x + dx[i];
@@ -45,15 +45,11 @@ public class boj2178 {
 
 				if (visited[nx][ny] || map[nx][ny] == 0) continue;
 
-				count++;
 				visited[nx][ny] = true;
 				map[nx][ny] = map[x][y] + 1;
 				q.add(new int[] {nx, ny});
 			}
 		}
-
-		System.out.println("count = " + count);
-
 	}
 
 	@Test
