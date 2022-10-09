@@ -7,17 +7,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class boj2178 {
-
+	int[][] map;
+	boolean[][] visited;
+	int N;
+	int M;
 	int[] dx = {-1, 1, 0, 0};
 	int[] dy = {0, 0, -1, 1};
 
+
 	int solution(int n, int m, int[][] maze) {
-		boolean[][] visited = new boolean[n][m];
+		N = n;
+		M = m;
+		map = maze;
+		visited = new boolean[n][m];
+
+		bfs(new int[]{0,0});
+
+		return maze[n-1][m-1];
+	}
+
+	private void bfs(int[] initialPoint) {
 		Queue<int[]> q = new LinkedList<>();
-
-		q.offer(new int[] {0, 0});
-		visited[0][0] = true;
-
+		q.offer(initialPoint);
+		
+		
+		int count = 0;
 		while (!q.isEmpty()) {
 			int[] now = q.poll();
 			int x = now[0];
@@ -26,21 +40,20 @@ public class boj2178 {
 			for (int i = 0; i < 4; i++) {
 				int nx = x + dx[i];
 				int ny = y + dy[i];
-				System.out.println(nx + "," + ny);
 
-				if (nx < 0 || ny < 0 || nx >= n || ny >= m)
-					continue;
+				if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
 
-				if (visited[nx][ny] && maze[nx][ny] == 0)
-					continue;
+				if (visited[nx][ny] || map[nx][ny] == 0) continue;
 
+				count++;
 				visited[nx][ny] = true;
-				maze[nx][ny] = maze[x][y] + 1;
+				map[nx][ny] = map[x][y] + 1;
 				q.add(new int[] {nx, ny});
 			}
 		}
 
-		return maze[n-1][m-1];
+		System.out.println("count = " + count);
+
 	}
 
 	@Test
@@ -51,25 +64,25 @@ public class boj2178 {
 			{1, 0, 1, 0, 1, 1},
 			{1, 1, 1, 0, 1, 1},
 		}), 15);
-		// Assertions.assertEquals(solution(4, 6, new int[][] {
-		// 	{1, 1, 0, 1, 1, 0},
-		// 	{1, 1, 0, 1, 1, 0},
-		// 	{1, 1, 1, 1, 1, 1},
-		// 	{1, 1, 1, 1, 0, 1},
-		// }), 9);
-		// Assertions.assertEquals(solution(2, 25, new int[][] {
-		// 	{1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
-		// 	{1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-		// }), 38);
-		// Assertions.assertEquals(solution(7, 7, new int[][] {
-		// 	{1, 0, 1, 1, 1, 1, 1},
-		// 	{1, 1, 1, 0, 0, 0, 1},
-		// 	{1, 0, 0, 0, 0, 0, 1},
-		// 	{1, 0, 0, 0, 0, 0, 1},
-		// 	{1, 0, 0, 0, 0, 0, 1},
-		// 	{1, 0, 0, 0, 0, 0, 1},
-		// 	{1, 1, 1, 1, 1, 1, 1},
-		// }), 13);
+		Assertions.assertEquals(solution(4, 6, new int[][] {
+			{1, 1, 0, 1, 1, 0},
+			{1, 1, 0, 1, 1, 0},
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 0, 1},
+		}), 9);
+		Assertions.assertEquals(solution(2, 25, new int[][] {
+			{1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
+			{1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
+		}), 38);
+		Assertions.assertEquals(solution(7, 7, new int[][] {
+			{1, 0, 1, 1, 1, 1, 1},
+			{1, 1, 1, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1},
+			{1, 0, 0, 0, 0, 0, 1},
+			{1, 1, 1, 1, 1, 1, 1},
+		}), 13);
 
 	}
 
