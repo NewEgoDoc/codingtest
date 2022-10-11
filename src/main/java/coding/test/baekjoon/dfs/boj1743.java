@@ -80,6 +80,22 @@ public class boj1743 {
 		answers.add(count);
 	}
 
+	int dfs(int x, int y,int count){
+		visited[x][y] = true;
+		for(int i = 0; i < 4; i++){
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			if (nx < 0 || ny < 0 || nx >= r || ny >= n)
+				continue;
+			if (visited[nx][ny] || map[nx][ny] == 0)
+				continue;
+
+			dfs(nx, ny, count+1);
+
+		}
+		return count;
+	}
+
 	void bfs(int[] initialPoint) {
 		Queue<int[]> q = new LinkedList<>();
 		q.offer(initialPoint);
