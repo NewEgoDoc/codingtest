@@ -30,18 +30,14 @@ public class boj1600 {
 
 		bfs(new int[]{0,0});
 
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
-				System.out.print(" " + visited[i][j]);
-			}
-			System.out.println();
-		}
-		return visited[h-1][w-1];
+
+		return visited[h-1][w-1] - 1;
 	}
 
 	private void bfs(int[] point) {
 		Queue<int[]> q = new LinkedList<>();
 		q.add(point);
+		visited[point[0]][point[1]] = 1;
 
 		while(!q.isEmpty()){
 			int[] poll = q.poll();
@@ -49,7 +45,6 @@ public class boj1600 {
 			int x = poll[0];
 			int y = poll[1];
 
-			System.out.println(x + " " + y);
 
 			if(x == h -1 && y == w -1){
 				return;
@@ -65,22 +60,20 @@ public class boj1600 {
 				visited[nx][ny] = visited[x][y] + 1;
 			}
 
-			if(k == 0){
+			if(k <= 0){
 				continue;
 			}
 
 			for (int i = 0; i < 6; i++) {
-
 				int nx = x + hx[i];
 				int ny = y + hy[i];
 
 				if(isImpossible(nx, ny)) continue;
 				if(visited[nx][ny] > 0 || matrix[nx][ny] == 1) continue;
 
-				++k;
 				q.add(new int[]{nx, ny});
 				visited[nx][ny] = visited[x][y] + 1;
-
+				k--;
 			}
 		}
 
@@ -104,7 +97,7 @@ public class boj1600 {
 		Assertions.assertEquals(solution(2, new int[][]{
 			{0, 0, 1, 1, 0},
 			{0, 0, 1, 1, 0}
-		}), 2);
+		}), -1);
 	}
 
 }
