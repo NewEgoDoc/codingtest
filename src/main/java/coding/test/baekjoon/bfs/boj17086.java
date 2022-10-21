@@ -17,8 +17,8 @@ public class boj17086 {
 
 	int[][] visited;
 
-	int[] dx = {-1,1,0,0};
-	int[] dy = {0,0,-1,1};
+	int[] dx = {-1,1,0,0,1,-1,1,-1};
+	int[] dy = {0,0,-1,1,1,-1,-1,1};
 
 	int solution(int [][] sharks){
 		n = sharks.length;
@@ -32,9 +32,7 @@ public class boj17086 {
 
 		bfs(sharkPoints);
 
-
-
-		return findMax();
+		return findMax() -1;
 	}
 
 	private int findMax() {
@@ -68,9 +66,9 @@ public class boj17086 {
 		while(!q.isEmpty()){
 			int[] poll = q.poll();
 			int x = poll[0];
-			int y = poll[2];
+			int y = poll[1];
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 8; i++) {
 				int nx = x + dx[i];
 				int ny = y + dy[i];
 
@@ -90,6 +88,8 @@ public class boj17086 {
 	}
 	@Test
 	void test(){
+
+
 		Assertions.assertEquals(solution(new int[][]{
 			{0, 0, 0, 1},
 			{0, 1, 0, 0},
@@ -98,6 +98,13 @@ public class boj17086 {
 			{0, 0, 0, 0},
 			{0, 1, 0, 0},
 			{0, 0, 0, 1}
+		}),2);
+		Assertions.assertEquals(solution(new int[][]{
+			{0,0, 1, 0},
+			{0,0, 0, 0},
+			{1,0, 0, 0},
+			{0,0, 0, 0},
+			{0,0, 0, 1},
 		}),2);
 	}
 }
