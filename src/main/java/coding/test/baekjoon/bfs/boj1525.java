@@ -37,13 +37,12 @@ public class boj1525 {
 
 		while (!q.isEmpty()){
 			String poll = q.poll();
-			System.out.println("poll = " + poll);
+
+			if(poll.equals("123456780")) return;
+
 			int zeroIndex = poll.indexOf('0');
-			System.out.println("zeroIndex = " + zeroIndex);
 			int x = zeroIndex / 3;
-			System.out.println("x = " + x);
 			int y = zeroIndex % 3;
-			System.out.println("y = " + y);
 
 			for (int i = 0; i < 4; i++) {
 				int nx = x + dx[i];
@@ -52,7 +51,6 @@ public class boj1525 {
 
 				if(isPositionImpossible(nx, ny)) continue;
 				StringBuilder sb = new StringBuilder(poll);
-				System.out.println("next = " + next);
 
 				char changePosition = sb.charAt(next);
 				sb.setCharAt(next, '0');
