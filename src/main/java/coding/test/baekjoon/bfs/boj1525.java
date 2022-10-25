@@ -5,59 +5,77 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class boj1525 {
 
-	int[] dx = {};
-	int[] dy = {};
+	int[] dx = {-1,1,0,0};
+	int[] dy = {0,0,-1,1};
 
 	int[][] map;
-	Map<String, Boolean> visited;
+	Map<String, Integer> visited;
 	int solution(int[][] puzzle){
 		map = puzzle;
 
-		int[] startPoint = findStartPoint();
-		bfs(startPoint);
+		String startpoint = getPuzzleString();
 
-		return 0;
+		bfs(startpoint);
+
+		
+		
+		Integer num = visited.get("123456780") == null? 0: visited.get("123456780");
+
+		return num -1;
 	}
 
-	private int[] findStartPoint() {
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				if(map[i][j] == 0) return new int[]{i, j};
-			}
-		}
-		return new int[0];
-	}
-
-	void bfs(int[] startPoint){
-		Queue<int[]> q = new LinkedList<>();
+	void bfs(String startPoint){
+		Queue<String> q = new LinkedList<>();
+		q.add(startPoint);
 		visited = new HashMap<>();
-		visited.put(getPuzzleString(),true);
+		visited.put(startPoint,1);
 
 		while (!q.isEmpty()){
-			int[] poll = q.poll();
-			int x = poll[0];
-			int y = poll[1];
+			String poll = q.poll();
+			System.out.println("poll = " + poll);
+			int zeroIndex = poll.indexOf('0');
+			System.out.println("zeroIndex = " + zeroIndex);
+			int x = zeroIndex / 3;
+			System.out.println("x = " + x);
+			int y = zeroIndex % 3;
+			System.out.println("y = " + y);
 
 			for (int i = 0; i < 4; i++) {
 				int nx = x + dx[i];
 				int ny = y + dy[i];
+				int next = nx*3 + ny;
 
-				if(isPositionImpossible()) continue;
-				if(visited.containsKey()) continue;
+				if(isPositionImpossible(nx, ny)) continue;
+				StringBuilder sb = new StringBuilder(poll);
+				System.out.println("next = " + next);
+
+				char changePosition = sb.charAt(next);
+				sb.setCharAt(next, '0');
+				sb.setCharAt(zeroIndex, changePosition);
+
+				if(visited.get(sb.toString()) != null) continue;
+
+				visited.put(sb.toString(), visited.get(poll) + 1);
+				q.add(sb.toString());
+
 			}
 		}
 
 	}
 
+	private boolean isPositionImpossible(int nx, int ny) {
+		return nx < 0 || ny < 0 || nx >= 3 || ny >= 3;
+	}
+
 	private String getPuzzleString() {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
 				sb.append(map[i][j]);
 			}
 		}
@@ -66,6 +84,15 @@ public class boj1525 {
 
 	@Test
 	void test(){
-
+		Assertions.assertEquals(solution(new int[][]{
+			{1, 0, 3},
+			{4, 2, 5},
+			{7, 8, 6}
+		}),3);
+		Assertions.assertEquals(solution(new int[][]{
+			{3, 6, 0},
+			{8, 1, 2},
+			{7, 4, 5},
+		}),-1);
 	}
 }
