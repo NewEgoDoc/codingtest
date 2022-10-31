@@ -1,10 +1,10 @@
 package coding.test.baekjoon.bfs;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class boj1600 {
 	int k;
