@@ -37,7 +37,7 @@ public class boj1016 {
                 count++;
         }
 
-        return count;
+         return count;
 
     }
 
