@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 
 public class boj3197 {
 
+	int n;
+	int m;
+	char[][] map;
+
+
 	int solution(int N, int M, char[][] spaces){
 
 		return 0;
