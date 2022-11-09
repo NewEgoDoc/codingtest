@@ -28,22 +28,27 @@ public class 택배상자 {
             }
 
             if(now != order[index]){
-                if(!sub.isEmpty() && sub.peek() == order[index]){
-                    truck.add(now);
-                    index++;
-                    sub.pop();
-                }
+
+                index = checkAuxiliaryConveyor(order, sub, truck, index);
 
                 sub.push(now);
             }
         }
 
+        index = checkAuxiliaryConveyor(order, sub, truck, index);
+        
+        System.out.println("main = " + main);
+        System.out.println("sub = " + sub);
+
+        return truck.size();
+    }
+
+    private int checkAuxiliaryConveyor(int[] order, Stack<Integer> sub, List<Integer> truck, int index) {
         while(!sub.isEmpty() && sub.peek() == order[index]){
             truck.add(sub.pop());
             index++;
         }
-
-        return truck.size();
+        return index;
     }
 
     @Test
