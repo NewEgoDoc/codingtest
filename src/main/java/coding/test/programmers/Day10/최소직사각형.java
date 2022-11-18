@@ -5,12 +5,30 @@ import org.junit.jupiter.api.Test;
 
 public class 최소직사각형 {
     public int solution(int[][] sizes) {
-        int answer = 0;
+        int maxWidth = 0;
+        int maxHeight = 0;
+        int wallet_size;
 
+        for(int i=0; i<sizes.length; i++){
+            int tmp;
 
+            for(int j=0; j<2; j++){
+                if(sizes[i][0] < sizes[i][1]){
+                    tmp = sizes[i][0];
+                    sizes[i][0] = sizes[i][1];
+                    sizes[i][1] = tmp;
+                }
+                if(maxWidth < sizes[i][0]){
+                    maxWidth = sizes[i][0];
+                }
+                if(maxHeight < sizes[i][1]){
+                    maxHeight = sizes[i][1];
+                }
+            }
+        }
+        wallet_size = maxWidth * maxHeight;
 
-
-        return answer;
+        return wallet_size;
     }
 
     @Test
