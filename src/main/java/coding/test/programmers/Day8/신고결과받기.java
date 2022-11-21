@@ -7,32 +7,39 @@ import java.util.*;
 
 public class 신고결과받기 {
     public int[] solution(String[] id_list, String[] report, int k) {
-        int[] answer = new int[id_list.length];
-        Map<String, HashSet<String>> map = new HashMap<>();
-        Map<String, Integer> index = new HashMap<>();
+        Map<String, HashSet<String>> reportMap = new HashMap<>();
+        Map<String, Integer> indexMap = new HashMap<>();
+        int[] announce = new int[id_list.length];
 
         for (int i = 0; i < id_list.length; i++) {
-            String name = id_list[i];
-            map.put(name, new HashSet<>());
-            index.put(name, i);
+            indexMap.put(id_list[i], i);
+            reportMap.put(id_list[i],new HashSet<>());
         }
 
-        for (String s : report) {
-            String[] str = s.split(" ");
-            String from = str[0];
-            String to = str[1];
-            map.get(to).add(from);
+        for (int i = 0; i < report.length; i++) {
+            String[] names = report[i].split(" ");
+            String reporting = names[0];
+            String reported = names[1];
+
+            reportMap.get(reported).add(reporting);
         }
 
         for (int i = 0; i < id_list.length; i++) {
-            HashSet<String> send = map.get(id_list[i]);
-            if (send.size() >= k) {
-                for (String name : send) {
-                    answer[index.get(name)]++;
+            HashSet<String> reportingPeople = reportMap.get(id_list[i]);
+            if(reportingPeople.size() >= k) {
+                for (String name: reportingPeople){
+                    int index = indexMap.get(name);
+                    announce[index] += 1;
                 }
             }
         }
-        return answer;
+
+        for (int i = 0; i < announce.length; i++) {
+            System.out.print(" " + announce[i]);
+        }
+        System.out.println();
+
+        return announce;
     }
 
     @Test
