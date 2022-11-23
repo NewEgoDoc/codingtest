@@ -3,25 +3,25 @@ package coding.test.programmers.Day9;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class n제곱배열자르기 {
-    public List<Long> solution(int n, long left, long right) {
+    public int[] solution(int n, long left, long right) {
+        int len = (int)(right - left) + 1;
 
-        List<Long> list = new ArrayList<>();
+        int[] answer = new int[len];
 
-        for(long i=left;i<right+1;i++){
-            list.add(Math.max(i/n,i%n) + 1);
+        int index = 0;
+        for (long i = left; i <= right; i++) {
+            long row = i / n;
+            long col = i % n;
+            answer[index++] = Math.max((int)row, (int)col) + 1;
         }
 
-        return list;
+        return answer;
     }
 
     @Test
     void test(){
-        Assertions.assertEquals(solution(3,2,5), Arrays.asList(3,2,2,3));
-        Assertions.assertEquals(solution(4, 7, 14), Arrays.asList(4,3,3,3,4,4,4,4));
+        Assertions.assertArrayEquals(solution(3,2,5), new int[]{3,2,2,3});
+        Assertions.assertArrayEquals(solution(4, 7, 14), new int[]{4,3,3,3,4,4,4,4});
     }
 }
