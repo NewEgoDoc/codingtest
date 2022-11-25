@@ -3,62 +3,30 @@ package coding.test.programmers.Day12;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class 귤고르기 {
-    int n;
-    int r;
-    int index;
-    int start;
-    int[] array;
-    int[] result;
-    int min;
-    int numberOfSort;
+    //맵을 정렬해서 마지막 혹은 맨앞에 있는 개수의 종류를 세어주면 해당 문제는 클리어
     public int solution(int k, int[] tangerine) {
-        boolean reverse = false;
-        start = 0;
-        array = tangerine;
-        n = tangerine.length;
-        r = k;
-        if(n - k < n/2){
-            r = n - k;
-            reverse = true;
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int tgr: tangerine){
+            map.put(tgr, map.getOrDefault(tgr, 0) + 1);
         }
-        result = new int[r];
-        Set<Integer> set = new HashSet<>();
-        for(int t: tangerine){
-            set.add(t);
-        }
-        numberOfSort = set.size();
-        min = Integer.MAX_VALUE;
-        combination(reverse);
 
-        return min;
+        ArrayList<Integer> keySet = new ArrayList<>(map.keySet());
+        keySet.sort(((o1, o2) -> map.get(o2).compareTo(map.get(o1))));
+
+        int sum = 0;
+        int count = 0;
+        for (int key: keySet){
+            if(sum >= k) break;
+            sum += map.get(key);
+            count++;
+        }
+        
+        return count;
     }
 
-    private void combination(boolean reverse) {
-        if(index == r) {
-            Set<Integer> set = new HashSet<>();
-            for (int i = 0; i < r; i++) {
-                set.add(result[i]);
-            }
-            if(reverse) {
-                min = Math.min(min, numberOfSort - set.size());
-            } else {
-                min = Math.min(min, set.size());
-            }
-
-            return;
-        }
-        for (int i = start; i < n; i++) {
-            result[index] = array[i];
-            start = i + 1;
-            index++;
-            combination(reverse);
-            index--;
-        }
-    }
 
     @Test
     void test(){
