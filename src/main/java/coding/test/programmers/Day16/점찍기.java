@@ -5,17 +5,12 @@ import org.junit.jupiter.api.Test;
 
 public class 점찍기 {
     public long solution(int k, int d) {
-        long answer = 0;
-
-        for (int i = 0; i <= d; i+=k) {
-            for (int j = 0; j <= d; j+=k) {
-                if(Math.sqrt(Math.pow(i,2) + Math.pow(j,2)) <= d) {
-                    answer++;
-                    System.out.println(i + " / " + j);
-                }
-            }
+        int answer = 0;
+        long squareOfd = (long)d * (long)d;
+        //문제에서는 원점과 찍은 점의 거리가 d 이하인 양의 정수인 점의 개수를 구하는 것
+        for (long i = 0; i <= (long)d; i+=(long)k) {
+            answer += (long)Math.sqrt(squareOfd - i*i) / k + 1;
         }
-
         return answer;
     }
 
