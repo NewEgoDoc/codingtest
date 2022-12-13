@@ -17,6 +17,8 @@ public class 이차원동전뒤집기 {
         permutation(5,0);
 
         return answer;
+
+
     }
 
     void permutation(int n, int cnt) {
