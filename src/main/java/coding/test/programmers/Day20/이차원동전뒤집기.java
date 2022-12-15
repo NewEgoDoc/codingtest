@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ public class 이차원동전뒤집기 {
     int numberOfRows;
     int numberOfColumns;
 
+    int[][] copy;
     int index;
     public int solution(int[][] beginning, int[][] target) {
         int answer = 0;
@@ -39,18 +41,10 @@ public class 이차원동전뒤집기 {
 
                 for(int[] rowCase: rowCases){
                     for (int[] colCase: colCases) {
-                        int[][] copyArray = new int[numberOfRows][numberOfColumns];
-                        for(int rowNum: rowCase){
-                            changRowNum(beginning, copyArray, rowNum);
-                        }
-                        for(int colNum: colCase){
-                            changeColNum(beginning, copyArray, colNum);
-                        }
-
-                        if(checkSame(copyArray, target)) {
-                            System.out.println("ASDFASDFASDF");
-                            return (row+col);
-                        }
+                        copyArray(beginning);
+                        System.out.println(Arrays.toString(rowCase));
+                        System.out.println(Arrays.toString(colCase));
+                        System.out.println();
                     }
                 }
 
@@ -58,6 +52,21 @@ public class 이차원동전뒤집기 {
         }
 
         return -1;
+    }
+
+    public void copyArray(int[][] beginning) {
+        copy = new int[numberOfRows][numberOfColumns];
+
+        for (int i = 0; i < numberOfRows; i++)
+            for (int j = 0; j < numberOfColumns; j++)
+                copy[i][j] = beginning[i][j];
+    }
+
+    private void print(int[][] copyArray) {
+        for(int[] array: copyArray){
+            System.out.println(Arrays.toString(array));
+        }
+        System.out.println();
     }
 
     private void changeColNum(int[][] beginning, int[][] copyArray, int colNum) {
@@ -72,19 +81,14 @@ public class 이차원동전뒤집기 {
         }
     }
 
-    private void changRowNum(int[][] beginning, int[][] copyArray, int rowNum) {
-        for (int i = 0; i < numberOfRows; i++) {
-            for (int j = 0; j < numberOfColumns; j++) {
-                if(i == (rowNum -1)) {
-                    copyArray[i][j] = (beginning[i][j] == 0)? 1:0;
-                } else {
-                    copyArray[i][j] = beginning[i][j];
-                }
-            }
+    private void changRows(int[] rowCases) {
+        for(int rowNum: rowCases){
+            for (int i = 0; i < numberOfColumns; i++)
+                copy[rowNum-1][i] = copy[rowNum-1][i] == 0 ? 1 : 0;
         }
     }
 
-    private boolean checkSame(int[][] a, int[][] b){
+    private boolean isSameArray(int[][] a, int[][] b){
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
                 if(a[i][j] != b[i][j]){
@@ -125,6 +129,11 @@ public class 이차원동전뒤집기 {
 
     @Test
     void test(){
+        int[][] testSet = new int[][]{{0, 1, 0, 0, 0} ,{1, 0, 1, 0, 1} ,{0, 1, 1, 1, 0} ,{1, 0, 1, 1, 0} ,{0, 1, 0, 1, 0}};
+        copyArray(testSet);
+        print(testSet);
+        changRows(new int[]{2});
+        print(copy);
         Assertions.assertEquals(solution(
                 new int[][]{{0, 1, 0, 0, 0} ,{1, 0, 1, 0, 1} ,{0, 1, 1, 1, 0} ,{1, 0, 1, 1, 0} ,{0, 1, 0, 1, 0}},
                 new int[][]{{0, 0, 0, 1, 1} ,{0, 0, 0, 0, 1} ,{0, 0, 1, 0, 1} ,{0, 0, 0, 1, 0} ,{0, 0, 0, 0, 1}}
