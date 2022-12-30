@@ -67,97 +67,24 @@ public class 마법의엘리베이터 {
     int isUp;
     public int solution(int storey) {
         int answer = 0;
-        Queue<Integer> q = new LinkedList<>();
-        isUp = 0;
-        while(storey != 0){
-            q.add(storey % 10);
-            storey /= 10;
-        }
-
-        while (!q.isEmpty()){
-            if(q.peek() == 0) {
-                q.poll();
-                continue;
-            }
-
-            int num = q.poll() + isUp;
-            if(num <= 5) {
-                answer += num;
-                isUp = 0;
+        while(storey >= 1){
+            int now = storey % 10;
+            if((now == 5) && ((storey / 10) % 10) >= 5 || now > 5){
+                storey += 10 - now;
+                answer += 10 - now;
             } else {
-                answer += (10 - num);
-                isUp = 1;
+                answer += now;
             }
-
-            System.out.println("answer = " + answer);
-            if(q.size() == 1 && q.peek() == 9 && isUp == 1){
-                q.poll();
-                answer += 1;
-            }
-
+            storey = storey / 10;
         }
 
         return answer;
     }
 
-    int downToZero(int n)
-    {
-
-        // Base case
-        if (n <= 3)
-            return n;
-
-        // Allocate memory for storing
-        // intermediate results
-        int []dp = new int[n + 1];
-        for(int i = 0; i < n + 1; i++)
-            dp[i] = -1;
-
-        // Store base values
-        dp[0] = 0;
-        dp[1] = 1;
-        dp[2] = 2;
-        dp[3] = 3;
-
-        // Stores square root
-        // of each number
-        int sqr;
-        for(int i = 4; i <= n; i++)
-        {
-
-            // Compute square root
-            sqr = (int)Math.sqrt(i);
-
-            int best = Integer.MAX_VALUE;
-
-            // Use rule 1 to find optimized
-            // answer
-            while (sqr > 1)
-            {
-
-                // Check if it perfectly divides n
-                if (i % sqr == 0)
-                {
-                    best = Math.min(best, 1 + dp[sqr]);
-                }
-                sqr--;
-            }
-
-            // Use of rule 2 to find
-            // the optimized answer
-            best = Math.min(best, 1 + dp[i - 1]);
-
-            // Store computed value
-            dp[i] = best;
-        }
-
-        // Return answer
-        return dp[n];
-    }
 
     @Test
     void test(){
-        Assertions.assertEquals(downToZero(16),6);
+        Assertions.assertEquals(solution(16),6);
         Assertions.assertEquals(solution(2554),16);
         Assertions.assertEquals(solution(2556),15);
         Assertions.assertEquals(solution(99),2);
@@ -167,6 +94,6 @@ public class 마법의엘리베이터 {
         Assertions.assertEquals(solution(38),6);
         Assertions.assertEquals(solution(44),8);
         Assertions.assertEquals(solution(155),11);
-        Assertions.assertEquals(solution(911),3);
+        Assertions.assertEquals(solution(911),4);
     }
 }
