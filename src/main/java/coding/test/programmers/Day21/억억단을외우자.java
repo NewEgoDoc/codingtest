@@ -21,12 +21,26 @@ public class 억억단을외우자 {
             getDivisorCount(i);
         }
 
-        int[][] map = new int[e+1][1];
 
-        findMinimumIndex(map);
+        int[][] store = new int[e+1][2];
+        store[e][0] = countDivisors[e];
+        store[e][1] = e;
+        for(int i=e-1; i>=1; i--){
+            int cnt = countDivisors[i];
+
+            // 최대 약수 갱신
+            if(cnt >= store[i+1][0]){
+                store[i][0] = cnt;
+                store[i][1] = i;
+            }else{
+                store[i][0] = store[i+1][0];
+                store[i][1] = store[i+1][1];
+            }
+        }
 
         for (int i = 0; i < starts.length; i++) {
-            answer[i] = map[starts[i]][0];
+            int star = starts[i];
+            answer[i] = store[star][1];
         }
 
         return answer;
