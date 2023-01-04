@@ -3,6 +3,7 @@ package coding.test.programmers.Day29;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,28 +11,58 @@ import java.util.Map;
 
 public class 교점에별만들기 {
 
-    int start = 0;
-    int index = 0;
-
-    int[] result;
-
+    int start;
+    int index;
     int[][] lines;
+    int[] result;
     List<long[]> list;
     long minX;
     long minY;
     long maxX;
     long maxY;
     public String[] solution(int[][] line) {
-        String[] answer = {};
+        start = 0;
+        index = 0;
         lines = line;
         result = new int[2];
-
         list = new ArrayList<>();
-        combination(5);
-
-        for(long[] l: list){
-            System.out.println(Arrays.toString(l));
+        minX = 0;
+        minY = 0;
+        maxX = 0;
+        maxY = 0;
+        combination(lines.length);
+        System.out.println("minX = " + minX);
+        System.out.println("maxX = " + maxX);
+        System.out.println("minY = " + minY);
+        System.out.println("maxY = " + maxY);
+        boolean[][] answerTemp = new boolean[(int) (maxY- minY +1)][(int) (maxX - minX + 1)];
+        for(boolean[] at: answerTemp){
+            System.out.println(Arrays.toString(at));
         }
+        for (long[] ints : list) {
+            int x = (int) (ints[0] - minX);
+            int y = (int) (ints[1] - maxY);
+            System.out.println(Arrays.toString(ints));
+            System.out.println("comcom:"+x + "," + y);
+            answerTemp[Math.abs(y)][Math.abs(x)] = true;
+        }
+
+        String[] answer = new String[answerTemp.length];
+
+        int i = 0;
+        for (boolean[] bs : answerTemp) {
+            StringBuilder sb = new StringBuilder();
+            for (boolean b : bs) {
+                if(b){
+                    sb.append("*");
+                }else{
+                    sb.append(".");
+                }
+            }
+            answer[i] = sb.toString();
+            i++;
+        }
+
 
         return answer;
     }
@@ -57,7 +88,7 @@ public class 교점에별만들기 {
                 double x = xNumerator / (double) xDenominator;
                 double y = yNumerator / (double) yDenominator;
 
-                if(Math.floor(x) == x || Math.floor(y) == y){
+                if(Math.floor(x) == x && Math.floor(y) == y){
                     list.add(new long[]{(long)x, (long)y});
                     minX = Math.min(minX, (long)x);
                     maxX = Math.max(maxX, (long)x);
@@ -87,25 +118,42 @@ public class 교점에별만들기 {
 
     @Test
     void test(){
-        Assertions.assertEquals(
-            solution(new int[][]{
-                    {2, -1, 4},
-                    {-2, -1, 4},
-                    {0, -1, 1},
-                    {5, -8, -12},
-                    {5, 8, 12}
-        }), new String[]{
-                "....*....",
-                ".........",
-                ".........",
-                "*.......*",
-                ".........",
-                ".........",
-                ".........",
-                ".........",
-                "*.......*"}
+//        Assertions.assertArrayEquals(
+//            solution(new int[][]{
+//                    {2, -1, 4},
+//                    {-2, -1, 4},
+//                    {0, -1, 1},
+//                    {5, -8, -12},
+//                    {5, 8, 12}
+//        }), new String[]{
+//                "....*....",
+//                ".........",
+//                ".........",
+//                "*.......*",
+//                ".........",
+//                ".........",
+//                ".........",
+//                ".........",
+//                "*.......*"}
+//        );
+        Assertions.assertArrayEquals(
+                solution(new int[][]{
+                        {0, 1, -1}, {1, 0, -1}, {1, 0, 1}
+                }), new String[]{
+                        "*.*"}
         );
-
+        Assertions.assertArrayEquals(
+                solution(new int[][]{
+                        {1, -1, 0}, {2, -1, 0}
+                }), new String[]{
+                        "*"}
+        );
+        Assertions.assertArrayEquals(
+                solution(new int[][]{
+                        {1, -1, 0}, {2, -1, 0}, {4, -1, 0}
+                }), new String[]{
+                        "*"}
+        );
 
     }
 }
