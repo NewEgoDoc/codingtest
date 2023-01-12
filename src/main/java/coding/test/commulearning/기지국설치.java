@@ -8,22 +8,23 @@ import java.util.Queue;
 
 public class 기지국설치 {
     public int solution(int n, int[] stations, int w) {
-        int answer = 0;
-        int index = 0;//for stations array
+        int count = 0;
+
+        int index = 0;//for stations
+
         int position = 1;
 
         while(position <= n){
             if(index < stations.length && position >= stations[index] - w){
                 position = stations[index] + w + 1;
                 index++;
-            } else {
-                answer++;//일단 기지국 세움
-                //전파 범위만큼 다음 position으로 넘어감
-                position += w * 2 + 1;
+                continue;
             }
+            count++;
+            position += (2 * w) + 1;
         }
 
-        return answer;
+        return count;
     }
 
     @Test
