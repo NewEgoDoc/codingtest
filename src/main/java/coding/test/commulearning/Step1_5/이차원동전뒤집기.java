@@ -71,6 +71,6 @@ public class 이차원동전뒤집기 {
 
     @Test
     void test(){
-        Assertions.assertEquals(solution(new ));
+//        Assertions.assertEquals(solution(new ));
     }
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class 가장큰수 {
     public String solution(int[] numbers) {
@@ -13,6 +15,10 @@ public class 가장큰수 {
         for(int i = 0; i < numbers.length; i++) {
             stringNumbers[i] = Integer.toString(numbers[i]);
         }
+
+        IntStream.of(numbers)
+                .mapToObj(String::valueOf)
+                .sorted((o1,o2)->(o2+o1).compareTo(o1+o2)).toArray();
 
         Arrays.sort(stringNumbers, (o1, o2) -> {
             return (o2+o1).compareTo(o1+o2);

@@ -22,6 +22,8 @@ public class 다트게임 {
                 round[index] = c - 48;
                 continue;
             }
+
+
             if(c == 'S'){
                 continue;
             }
