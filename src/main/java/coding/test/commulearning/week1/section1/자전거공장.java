@@ -3,6 +3,7 @@ package coding.test.commulearning.week1.section1;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class 자전거공장 {
@@ -12,7 +13,6 @@ public class 자전거공장 {
         int maxMonth = 0;
         for (int[] o : order) maxMonth = Math.max(maxMonth, o[0]);
 
-        System.out.println("maxMonth = " + maxMonth);
         int[] monthlyOrder = new int[maxMonth];
         int need = 0;
         int made = 0;
@@ -21,26 +21,28 @@ public class 자전거공장 {
             monthlyOrder[o[0] - 1] += o[1]; // 월을 index로 사용하기 위해 -1을 해줍니다
             need += o[1];
         }
-        System.out.println("Arrays.toString(monthlyOrder) = " + Arrays.toString(monthlyOrder));
+        System.out.println("maxMonth = " + maxMonth);
+        System.out.println(Arrays.toString(monthlyOrder));
         System.out.println("need = " + need);
-        System.out.println("made = " + made);
         for (int i = 0; i < cost.length - 1; i++) {
-            System.out.println(Arrays.toString(cost[i]));
             if (need == 0 || made >= need) break;
 
-            int price = cost[i][1];
-            int limit = cost[i + 1][0] - cost[i][0];
-            int rest = 0;
-            System.out.println("price = " + price);
-            System.out.println("limit = " + limit);
+            int price = cost[i][1];// 해당 구간의 비용
+            int limit = cost[i + 1][0] - cost[i][0]; //해당 구간의 최대 개수
 
+            System.out.println(cost[i][0] + " ~ " + cost[i+1][0] + " : " + cost[i][1]);
+
+            int rest = 0;
+            System.out.println(" ============================================================= ");
+            //need는 최대 필요한 개수
             for (int j = 0; j < maxMonth; j++) {
                 if (need == 0 || made >= need) break;
 
                 int making = Math.min(limit, need - made);
-                System.out.println("making = " + making);
+                System.out.println(making);
                 answer += making * price;
                 made += making;
+
                 need -= monthlyOrder[j];
 
                 if (monthlyOrder[j] == 0) continue; // 납품을 안해도 됩니다.
@@ -52,6 +54,7 @@ public class 자전거공장 {
                 monthlyOrder[j] -= delivery;
                 rest += monthlyOrder[j]; // 납품하고도 남은것은 다음구간에서 만들어야 합니다.
             }
+            System.out.println(" ============================================================= ");
 
             need = rest;
             made = 0;
