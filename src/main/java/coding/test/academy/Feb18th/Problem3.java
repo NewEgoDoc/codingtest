@@ -13,7 +13,7 @@ public class Problem3 {
         if (list.size() <= 1) {
             return;
         }
-        Integer pivot = list.getFirst();
+        Integer pivot = 3;
         LinkedList<Integer> less = new LinkedList<Integer>();
         LinkedList<Integer> greater = new LinkedList<Integer>();
         for (Integer element : list) {
