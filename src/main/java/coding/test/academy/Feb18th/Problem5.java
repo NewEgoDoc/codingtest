@@ -22,7 +22,7 @@ public class Problem5 {
         M = m;
         N = n;
         map = maze;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             visited = new int[m][n];
             bfs(new int[]{i,0});
         }
@@ -33,11 +33,9 @@ public class Problem5 {
     }
 
     void bfs(int[] start){
-
         if(map[start[0]][start[1]] == 0) return;
         Queue<int[]> q = new LinkedList<>();
         q.add(start);
-        System.out.println(Arrays.toString(start));
         visited[start[0]][start[1]] = 1;
 
         while (!q.isEmpty()){
@@ -46,7 +44,6 @@ public class Problem5 {
             int y = poll[1];
             
             if(y == N-1) {
-                System.out.println(Arrays.toString(poll));
                 min = Math.min(min, visited[x][y]);
                 break;
             }
@@ -61,10 +58,6 @@ public class Problem5 {
                 q.add(new int[]{nx, ny});
                 visited[nx][ny] = visited[x][y] + 1;
             }
-            for(int[] v: visited){
-                System.out.println(Arrays.toString(v));
-            }
-            System.out.println();
         }
     }
 
@@ -81,6 +74,12 @@ public class Problem5 {
                 {1,1,0,0,1},
                 {1,1,1,1,0},
                 {1,0,1,1,1}
-        }, 5, 5),6);
+        }, 5, 5),5);
+        Assertions.assertEquals(solution(new int[][]{
+                {0,1,0,1,1},
+                {0,0,1,1,1},
+                {0,1,0,0,1},
+                {0,1,1,1,0},
+        }, 4, 5),-1);
     }
 }
