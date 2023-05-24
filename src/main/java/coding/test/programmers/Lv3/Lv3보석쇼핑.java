@@ -3,54 +3,39 @@ package coding.test.programmers.Lv3;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Lv3보석쇼핑 {
     public int[] solution(String[] gems) {
         int[] answer = {0,0};
         Set<String> set = new HashSet<>();
-        for (String gem: gems){
+        for(String gem: gems){
             set.add(gem);
         }
 
-
-        int start = 0;
-        int end = gems.length - 1;
-
         int min = Integer.MAX_VALUE;
 
-        int s = start;
+        int s = 0;
         int e = s;
-
-
-        boolean isMinimum = false;
-        while(s <= end){
-
-            Set<String> findSet = new HashSet<>();
-            while(e < end + 1){
-                if(findSet.contains(gems[e])){
-                    e++;
-                    continue;
+        Map<String, Integer> map = new HashMap<>();
+        map.put(gems[s], 1);
+        while(s < gems.length){
+            if(map.keySet().size() == set.size()){
+                if(min > e -s){
+                    min = e - s;
+                    answer = new int[]{s+1, e+1};
                 }
-
-                findSet.add(gems[e]);
-
-                if(findSet.size() == set.size()){
-
-                    if(min > (e - s)){
-                        min = (e-s);
-                        answer = new int[]{s+1, e+1};
-                    }
-
-                    break;
+                map.put(gems[s], map.get(gems[s]) - 1);
+                if(map.get(gems[s]) == 0){
+                    map.remove(gems[s]);
                 }
+                s++;
+            } else if (e < gems.length - 1){
                 e++;
+                map.put(gems[e], map.getOrDefault(gems[e], 0) + 1);
+            } else {
+                break;
             }
-
-            s++;
-            e = s;
         }
 
         return answer;
