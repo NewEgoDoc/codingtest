@@ -3,34 +3,36 @@ package coding.test.programmers.Lv3;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 
 public class Lv3경주로건설 {
-    int[] dx = {-1,1,0,0};
-    int[] dy = {0,0,1,-1};
+    int[] dx = {1,0,-1,0};
+    int[] dy = {0,1,0,-1};
 
     int[][][] visited;
     int[][] map;
 
     int n;
+    int min;
 
     public int solution(int[][] board) {
-        int answer = 0;
         map = board;
         n = board.length;
-        visited = new int[n][n][4];
-        return answer;
+        visited = new int[n][n][5];
+        bfs();
+        return min;
     }
 
     void bfs(){
         Queue<int[]> q = new LinkedList<>();
         q.add(new int[]{0,0,-1,0});
-        visited[0][0][0] = 0;
-        visited[0][0][1] = 0;
+        visited[0][0][0] = 1;
+        visited[0][0][1] = 1;
 
-        int min = Integer.MAX_VALUE;
+        min = Integer.MAX_VALUE;
         
         while(!q.isEmpty()){
             int[] poll = q.poll();
@@ -56,11 +58,10 @@ public class Lv3경주로건설 {
                 } else {
                     nextCost += 600;
                 }
-
-                if(visited[nx][ny][i] == 0 || map[nx][ny] >= nextCost){
+                if(visited[nx][ny][i] == 0 || (visited[nx][ny][4] == 0 || visited[nx][ny][4] >= nextCost)){
                     q.add(new int[]{nx,ny,i,nextCost});
-                    visited[nx][ny][3] = nextCost;
-                    //boolean[nx][ny] = nex
+                    visited[nx][ny][i] = 1;
+                    visited[nx][ny][4] = nextCost;
                 }
 
             }
@@ -73,15 +74,9 @@ public class Lv3경주로건설 {
 
     @Test
     void test(){
-        String s = "io";
-        String ss = new String("i");
-        String sss = "i";
-
-        System.out.println(s == sss); // true
-        System.out.println(s == ss); // false
-//        Assertions.assertEquals(solution(new int[][]{{0,0,0}, {0,0,0}, {0,0,0}}), 900);
-//        Assertions.assertEquals(solution(new int[][]{{0,0,0,0,0,0,0,1}, {0,0,0,0,0,0,0,0}, {0,0,0,0,0,1,0,0}, {0,0,0,0,1,0,0,0}, {0,0,0,1,0,0,0,1}, {0,0,1,0,0,0,1,0}, {0,1,0,0,0,1,0,0}, {1,0,0,0,0,0,0,0}}), 3800);
-//        Assertions.assertEquals(solution(new int[][]{{0,0,1,0}, {0,0,0,0}, {0,1,0,1}, {1,0,0,0}}), 2100);
-//        Assertions.assertEquals(solution(new int[][]{{0,0,0,0,0,0}, {0,1,1,1,1,0}, {0,0,1,0,0,0}, {1,0,0,1,0,1}, {0,1,0,0,0,1}, {0,0,0,0,0,0}}), 3200);
+        Assertions.assertEquals(solution(new int[][]{{0,0,0}, {0,0,0}, {0,0,0}}), 900);
+        Assertions.assertEquals(solution(new int[][]{{0,0,0,0,0,0,0,1}, {0,0,0,0,0,0,0,0}, {0,0,0,0,0,1,0,0}, {0,0,0,0,1,0,0,0}, {0,0,0,1,0,0,0,1}, {0,0,1,0,0,0,1,0}, {0,1,0,0,0,1,0,0}, {1,0,0,0,0,0,0,0}}), 3800);
+        Assertions.assertEquals(solution(new int[][]{{0,0,1,0}, {0,0,0,0}, {0,1,0,1}, {1,0,0,0}}), 2100);
+        Assertions.assertEquals(solution(new int[][]{{0,0,0,0,0,0}, {0,1,1,1,1,0}, {0,0,1,0,0,0}, {1,0,0,1,0,1}, {0,1,0,0,0,1}, {0,0,0,0,0,0}}), 3200);
     }
 }
