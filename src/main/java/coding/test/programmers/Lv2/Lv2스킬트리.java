@@ -3,6 +3,7 @@ package coding.test.programmers.Lv2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -20,6 +21,13 @@ public class Lv2스킬트리 {
         }
 
         return answer;
+    }
+
+    public int solution2(String skill, String[] skill_trees){
+        return  (int) Arrays.stream(skill_trees)
+                .map((s)-> s.replaceAll("[^" + skill +"]",""))
+                .filter(skill::startsWith)
+                .count();
     }
 
     private String makeNecessarySkillTree(String skill, String skill_tree) {
@@ -42,16 +50,16 @@ public class Lv2스킬트리 {
 
     @Test
     public void test(){
-        assertEquals(solution("CBD",
+        assertEquals(solution2("CBD",
                 new String[]{"BACDE", "CBADF", "AECB", "BDA"}),2);
 
-        assertEquals(solution("CBDK",
+        assertEquals(solution2("CBDK",
                 new String[]{"CB", "CXYB", "BD", "AECD", "ABC", "AEX", "CDB", "CBKD", "IJCB", "LMDK"}),4);
-        assertEquals(solution("CBD",
+        assertEquals(solution2("CBD",
                 new String[]{"C", "D", "CB", "BDA"}),2);
-        assertEquals(solution("CBD",
+        assertEquals(solution2("CBD",
                 new String[]{"AEF", "ZJW"}),2);
-        assertEquals(solution("BDC",
+        assertEquals(solution2("BDC",
                 new String[]{"AAAABACA"}),0);
 
 
