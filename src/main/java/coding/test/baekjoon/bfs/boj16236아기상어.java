@@ -3,10 +3,7 @@ package coding.test.baekjoon.bfs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class boj16236아기상어 {
 
@@ -14,11 +11,9 @@ public class boj16236아기상어 {
     static int[][] map;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static int[][] visited = new int[n][n];
-
+    static int[][] visited;
     static int babySharkLevel;
-
-    static int fishEaten;
+    static int numberOfFish;
     static int second;
 
     public static void main(String[] args) throws IOException {
@@ -32,46 +27,70 @@ public class boj16236아기상어 {
                 map[i][j] = Integer.parseInt(values[j]);
             }
         }
-        babySharkLevel = 2;
+
         int[] babyShark = findBabyShark();
+        babySharkLevel = 2;
+        second = 0;
+        numberOfFish = 0;
+        while(true){
+            List<int[]> levelFishes = bfs(new int[]{babyShark[0], babyShark[1]});
+
+            for (int[] fish: levelFishes) {
+                System.out.println(Arrays.toString(fish));
+            }
+            System.out.println();
 
 
-
-        while (true) {
-            List<int[]> fishes = bfs(babyShark);
-            if (fishes.isEmpty()) {
+            if(levelFishes.size() == 0){
                 break;
             }
 
-            fishes.sort((o1, o2) -> {
-                if (o1[2] != o2[2]) {
-                    return Integer.compare(o1[2], o2[2]);
-                } else if (o1[0] != o2[0]) {
-                    return Integer.compare(o1[0], o2[0]);
+            levelFishes.sort((o1, o2) -> {
+                if(o1[2] != o2[2]){
+                    return o1[2] - o2[2];
+                } else if(o1[0] != o2[0]){
+                    return o1[0] - o2[0];
                 } else {
-                    return Integer.compare(o1[1], o2[1]);
+                    return o1[1] - o2[1];
                 }
             });
 
+            int[] fish = levelFishes.get(0);
+            map[babyShark[0]][babyShark[1]] = 0;
+            map[fish[0]][fish[1]] = 9;
+            babyShark[0] = fish[0];
+            babyShark[1] = fish[1];
+            second += fish[2];
+            numberOfFish += 1;
+
+            System.out.println("second = " + second);
+
+            if(numberOfFish == babySharkLevel){
+                babySharkLevel += 1;
+                numberOfFish = 0;
+            }
         }
 
-
-
+        System.out.println(second);
     }
 
     static int[] findBabyShark(){
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if(map[i][j] == 9) return new int[]{i, j};
+                if(map[i][j] == 9) {
+                    return new int[]{i, j};
+                }
             }
         }
-        return null;
+        return new int[]{0,0};
     }
 
-    static List<int[]> bfs(int[] babyShark){
+    static List<int[]> bfs(int[] babySharkPosition){
+        System.out.println(Arrays.toString(babySharkPosition));
+        visited = new int[n][n];
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{babyShark[0], babyShark[1], 2, 0});
-        visited[babyShark[0]][babyShark[1]] = 1;
+        q.add(new int[]{babySharkPosition[0], babySharkPosition[1], 0});
+        visited[babySharkPosition[0]][babySharkPosition[1]] = 1;
 
         List<int[]> list = new ArrayList<>();
         while(!q.isEmpty()){
@@ -87,15 +106,13 @@ public class boj16236아기상어 {
                 if(isPossible(nx, ny) || visited[nx][ny] == 1) continue;
 
                 if(map[nx][ny] == 0 || map[nx][ny] == babySharkLevel){
+                    visited[nx][ny] = 1;
                     q.add(new int[]{nx, ny, second + 1});
-                    continue;
+                } else if(map[nx][ny] < babySharkLevel){
+                    visited[nx][ny] = 1;
+                    list.add(new int[]{nx, ny, second + 1});
                 }
-                if(map[nx][ny] < babySharkLevel){
-                    list.add(new int[]{nx,ny, second+ 1});
-                }
-
             }
-
         }
         return list;
 
