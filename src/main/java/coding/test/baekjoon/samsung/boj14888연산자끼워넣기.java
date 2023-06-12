@@ -3,64 +3,55 @@ package coding.test.baekjoon.samsung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class boj14888연산자끼워넣기 {
-    public static int MAX = Integer.MIN_VALUE;	// 최댓값
-    public static int MIN = Integer.MAX_VALUE;	// 최솟값
-    public static int[] operator = new int[4];	// 연산자 개수
-    public static int[] number;					// 숫자
-    public static int N;						// 숫자 개수
-
+    
+    static int n;
+    static int[] a;
+    static int[] operator;
+    static int min;
+    static int max;
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        N = Integer.parseInt(br.readLine());
-        number = new int[N];
-
-        // 숫자 입력
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        for (int i = 0; i < N; i++) {
-            number[i] = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(br.readLine());
+        String[] array = br.readLine().split(" ");
+        a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = Integer.parseInt(array[i]);
         }
-
-        // 연산자 입력
-        st = new StringTokenizer(br.readLine(), " ");
+        String[] array2 = br.readLine().split(" ");
+        operator = new int[4];
         for (int i = 0; i < 4; i++) {
-            operator[i] = Integer.parseInt(st.nextToken());
+            operator[i] = Integer.parseInt(array2[i]);
         }
 
-        dfs(number[0], 1);
+        min = Integer.MAX_VALUE;
+        max = -Integer.MAX_VALUE;
 
-        System.out.println(MAX);
-        System.out.println(MIN);
+        dfs(1, a[0]);
+
+        System.out.println(max);
+        System.out.println(min);
 
     }
-
-    public static void dfs(int num, int idx) {
-        if (idx == N) {
-            MAX = Math.max(MAX, num);
-            MIN = Math.min(MIN, num);
+    
+    static void dfs(int index, int sum){
+        if(index == n){
+            min = Math.min(min, sum);
+            max = Math.max(max, sum);
             return;
         }
 
         for (int i = 0; i < 4; i++) {
-            // 연산자 개수가 1개 이상인 경우
-            if (operator[i] > 0) {
+            if(operator[i] > 0){
 
-                // 해당 연산자를 1 감소시킨다.
                 operator[i]--;
 
-                switch (i) {
+                if(i == 0) dfs(index + 1, sum + a[index]);
+                if(i == 1) dfs(index + 1, sum - a[index]);
+                if(i == 2) dfs(index + 1, sum * a[index]);
+                if(i == 3) dfs(index + 1, sum / a[index]);
 
-                    case 0:	dfs(num + number[idx], idx + 1);	break;
-                    case 1:	dfs(num - number[idx], idx + 1);	break;
-                    case 2:	dfs(num * number[idx], idx + 1);	break;
-                    case 3:	dfs(num / number[idx], idx + 1);	break;
-
-                }
-                // 재귀호출이 종료되면 다시 해당 연산자 개수를 복구한다.
                 operator[i]++;
             }
         }
