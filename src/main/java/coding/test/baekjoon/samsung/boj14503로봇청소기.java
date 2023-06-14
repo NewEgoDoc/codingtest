@@ -1,69 +1,80 @@
 package coding.test.baekjoon.samsung;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class boj14503로봇청소기 {
-    static int n;
-    static int m;
-    static int[][] map;
+    public static int N, M;
+    public static int[][] map;
+    public static int cnt = 0;
+    public static int[] dr = {-1, 0, 1, 0}; // 북,동,남,서
+    public static int[] dc = {0, 1, 0, -1};
 
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, 1, 0, -1};
-
-    static int answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] nm = br.readLine().split(" ");
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(nm[0]);
-        m = Integer.parseInt(nm[1]);
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        map = new int[N][M];
 
-        String[] robotPositionDirection = br.readLine().split(" ");
-        int[] robotState =  {
-                Integer.parseInt(robotPositionDirection[0]) - 1,
-                Integer.parseInt(robotPositionDirection[1]) - 1,
-                Integer.parseInt(robotPositionDirection[2])
-        };
+        st = new StringTokenizer(br.readLine());
+        int r = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
+        int d = Integer.parseInt(st.nextToken());
 
-        map = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            String[] input = br.readLine().split(" ");
-            for (int j = 0; j < m; j++) {
-                map[i][j] = Integer.parseInt(input[j]);
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < M; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+        clean(r, c, d);
 
-        answer = 0;
-        dfs(robotState[0], robotState[1], robotState[2]);
-
+        bw.write(cnt + "\n");
+        br.close();
+        bw.flush();
+        bw.close();
     }
 
-    static void dfs(int x, int y, int direction){
-        map[x][y] = -1;
+    public static void clean(int row, int col, int direction) {
+        // 1. 현재 위치를 청소한다.
+        if (map[row][col] == 0) {
+            map[row][col] = 2;
+            cnt++;
+        }
 
+        // 2. 왼쪽방향부터 차례대로 탐색을 진행한다.
+        boolean flag = false;
+        int origin = direction;
         for (int i = 0; i < 4; i++) {
+            int next_d = (direction + 3) % 4;
+            int next_r = row + dr[next_d];
+            int next_c = col + dc[next_d];
+
+            if (next_r > 0 && next_c > 0 && next_r < N && next_c < M) {
+                if (map[next_r][next_c] == 0) {   // 아직 청소하지 않은 공간이라면
+                    clean(next_r, next_c, next_d);
+                    flag = true;
+                    break;
+                }
+            }
             direction = (direction + 3) % 4;
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if(nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
-            if(map[nx][ny] != 0) continue;
-
-            answer++;
-            dfs(nx,ny,direction);
-            return;
         }
 
-        int back = (direction + 2) % 4;
-        int nx = x + dx[back];
-        int ny = y + dy[back];
+        // 네 방향 모두 청소가 되어있거나 벽인 경우
+        if (!flag) {
+            int next_d = (origin + 2) % 4;
+            int next_br = row + dr[next_d];
+            int next_bc = col + dc[next_d];
 
-        if(nx >= 0 && ny >= 0 && nx < n && ny < m && map[nx][ny] != 1){
-            dfs(nx,ny,direction);
+            if (next_br > 0 && next_bc > 0 && next_br < N && next_bc < M) {
+                if (map[next_br][next_bc] != 1) {
+                    clean(next_br, next_bc, origin); // 바라보는 방향 유지한 채 후진
+                }
+            }
         }
-
     }
 
 }
