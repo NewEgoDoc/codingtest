@@ -7,46 +7,44 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class NQueen {
-
-    int[] visit;
-    int N;
+    int[] col;
     int count;
-
+    
+    int N;
+    
     public int solution(int n) {
         count = 0;
         N = n;
         for (int i = 0; i < n; i++) {
-            visit = new int[n];
-            visit[0] = i;
-            recur(1);
+            col = new int[n];
+            col[0] = i;
+            dfs(1);
         }
+
         return count;
     }
 
-    void recur(int idx){
-        if(idx == N){
+    private void dfs(int index){
+        if(index == N){
             count++;
             return;
         }
-
         for (int i = 0; i < N; i++) {
-            visit[idx] = i;
-            if(isPossibleNext(idx)) {
-                recur(idx+1);
-            } else {
-                visit[idx] = 0;
-            }
+            col[index] = i;
+            if(isNotPossible(index)) continue;
+            dfs(index + 1);
         }
-        visit[idx] = 0;
+        
     }
 
-    private boolean isPossibleNext(int idx) {
-        for(int i = 0 ; i < idx ; ++i){
-            if(visit[i] == visit[idx]) return false;
-            if(Math.abs(idx - i) == Math.abs(visit[idx] - visit[i])) return false;
+    private boolean isNotPossible(int index) {
+        for (int i = 0; i < index; i++) {
+            if(col[i] == col[index]) return true;
+            if(Math.abs(index - i) == Math.abs(col[index] - col[i])) return true;
         }
-        return true;
+        return false;
     }
+
     @Test
     void test(){
         Assertions.assertEquals(solution(4), 2);
