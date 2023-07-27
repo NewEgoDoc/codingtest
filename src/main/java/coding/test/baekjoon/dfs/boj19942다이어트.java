@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class boj19942다이어트 {
@@ -13,46 +15,61 @@ public class boj19942다이어트 {
     static boolean[] visited;
     static List<Integer> list;
 
+    static List<Integer> answer;
     static int min;
 
-    static boolean isStop;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        min = N;
-        isStop = false;
+
         minimumNutrition = new int[4];
         String[] split = br.readLine().split(" ");
         for (int i = 0; i < 4; i++) {
             minimumNutrition[i] = Integer.parseInt(split[i]);
         }
 
-        visited = new boolean[N];
         goods = new ArrayList<>();
-
         for (int i = 0; i < N; i++) {
             String[] input = br.readLine().split(" ");
             goods.add(new int[]{
                     Integer.parseInt(input[0]),
                     Integer.parseInt(input[1]),
                     Integer.parseInt(input[2]),
-                    Integer.parseInt(input[3])
+                    Integer.parseInt(input[3]),
+                    Integer.parseInt(input[4])
             });
         }
 
         list = new ArrayList<>();
+        visited = new boolean[N];
+        min = Integer.MAX_VALUE;
 
         dfs();
 
-//        System.out.println("list = " + list);
+        if(min == Integer.MAX_VALUE){
+            System.out.println(-1);
+            return;
+        }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append(min);
+        sb.append("\n");
+
+        for(int index: answer){
+            sb.append(index+1);
+            sb.append(" ");
+        }
+
+        System.out.println(sb);
     }
 
     private static void dfs(){
-
-        if(isMoreThanMinimum() && min < list.size()){
-            min = Math.min(min, list.size());
+        if(isMoreThanMinimum()){
+            if(min > sum()){
+                min = sum();
+                answer = list.stream().toList();
+            }
             return;
         }
 
@@ -67,6 +84,14 @@ public class boj19942다이어트 {
         }
 
 
+    }
+
+    private static int sum() {
+        int cost = 0;
+        for(int l: list){
+            cost += goods.get(l)[4];
+        }
+        return cost;
     }
 
     private static boolean isMoreThanMinimum() {
