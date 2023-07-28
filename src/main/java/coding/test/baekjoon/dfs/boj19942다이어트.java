@@ -3,110 +3,86 @@ package coding.test.baekjoon.dfs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class boj19942다이어트 {
-    static int N;
-    static int[] minimumNutrition;
-    static List<int[]> goods;
-    static boolean[] visited;
-    static List<Integer> list;
+    static int N, M=5,ans =Integer.MAX_VALUE;
+    static int [][] nutrients;
+    static int [] minN;
+    static int []select;
 
-    static List<Integer> answer;
-    static int min;
+    static ArrayList<String> list = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
         N = Integer.parseInt(br.readLine());
 
-        minimumNutrition = new int[4];
-        String[] split = br.readLine().split(" ");
-        for (int i = 0; i < 4; i++) {
-            minimumNutrition[i] = Integer.parseInt(split[i]);
-        }
+        nutrients = new int[N][M]; // N개의 영양분을 담을 배열
+        minN = new int[4]; // 최저 영양소 기준을 담을 배열
 
-        goods = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            String[] input = br.readLine().split(" ");
-            goods.add(new int[]{
-                    Integer.parseInt(input[0]),
-                    Integer.parseInt(input[1]),
-                    Integer.parseInt(input[2]),
-                    Integer.parseInt(input[3]),
-                    Integer.parseInt(input[4])
-            });
-        }
+        st = new StringTokenizer(br.readLine());
+        for(int i=0;i<4;i++) minN[i] = Integer.parseInt(st.nextToken());
 
-        list = new ArrayList<>();
-        visited = new boolean[N];
-        min = Integer.MAX_VALUE;
-
-        dfs();
-
-        if(min == Integer.MAX_VALUE){
-            System.out.println(-1);
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(min);
-        sb.append("\n");
-
-        for(int index: answer){
-            sb.append(index+1);
-            sb.append(" ");
-        }
-
-        System.out.println(sb);
-    }
-
-    private static void dfs(){
-        if(isMoreThanMinimum()){
-            if(min > sum()){
-                min = sum();
-                answer = list.stream().toList();
-            }
-            return;
-        }
-
-        for (int i = 0; i < N; i++) {
-            if(!visited[i]){
-                visited[i] = true;
-                list.add(i);
-                dfs();
-                list.remove(list.size() - 1);
-                visited[i] = false;
+        for(int i=0;i<N;i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j=0;j<M;j++) {
+                nutrients[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+        for(int i=1;i<=N;i++) {
+            select = new int[N];
+            choice(0,i,0);
+        }
+        if(list.size()>0) {
+            System.out.println(ans);
+            Collections.sort(list);
+            String st1 = list.get(0);
+            for(int i=0;i<st1.length();i++) {
+                System.out.print(st1.charAt(i));
+            }
+        }else System.out.println(-1);
+    }
 
+    public static void choice(int cnt, int sel, int start) {
+        if(cnt==sel) {
+            isCheck(sel); //조건체크
+            return;
+        }
+        for(int i=start;i<N;i++) {
+            select[cnt]=i;
+            choice(cnt+1,sel,i+1);
+        }
 
     }
 
-    private static int sum() {
-        int cost = 0;
-        for(int l: list){
-            cost += goods.get(l)[4];
-        }
-        return cost;
-    }
-
-    private static boolean isMoreThanMinimum() {
-        int[] sum = new int[4];
-        for (int i = 0; i < list.size(); i++) {
-            sum[0] += goods.get(list.get(i))[0];
-            sum[1] += goods.get(list.get(i))[1];
-            sum[2] += goods.get(list.get(i))[2];
-            sum[3] += goods.get(list.get(i))[3];
+    public static boolean isCheck(int sel) {
+        int price=0;
+        int []sum = new int[4];
+        for(int i=0;i<sel;i++) {
+            sum[0]+=nutrients[select[i]][0];
+            sum[1]+=nutrients[select[i]][1];
+            sum[2]+=nutrients[select[i]][2];
+            sum[3]+=nutrients[select[i]][3];
+            price+=nutrients[select[i]][4];
         }
 
+        for(int i=0;i<4;i++) {
+            if(minN[i]>sum[i]) return false;
+        }
 
-        return sum[0] >= minimumNutrition[0] &&
-                sum[1] >= minimumNutrition[1] &&
-                sum[2] >= minimumNutrition[2] &&
-                sum[3] >= minimumNutrition[3];
+        if(ans>=price) {
+            if(ans>price) {
+                list.clear();
+            }
+            String str="";
+            for(int i=0;i<sel;i++) {
+                str+=(select[i]+1+" ");
+            }
+            list.add(str);
+            ans = price;
+        }
+        return true;
     }
 }
