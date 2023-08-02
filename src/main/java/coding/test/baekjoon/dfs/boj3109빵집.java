@@ -42,7 +42,10 @@ public class boj3109빵집 {
         visited = new boolean[R][C];
         for (int i = 0; i < R; i++) {
             isStop = false;
+<<<<<<< HEAD
             visited[i][0] = true;
+=======
+>>>>>>> origin/master
             dfs(i, 0);
 
             for (int j = 0; j < R; j++) {
@@ -53,10 +56,21 @@ public class boj3109빵집 {
         }
 
 
+<<<<<<< HEAD
         System.out.println(count);
     }
 
     private static void dfs(int x, int y){
+=======
+
+
+        System.out.println("count = " + count);
+    }
+
+    private static void dfs(int x, int y){
+        if(isStop) return;
+
+>>>>>>> origin/master
         if(y == C-1){
             count++;
             isStop = true;
@@ -69,6 +83,7 @@ public class boj3109빵집 {
 
             if(nx >= R || ny >= C || ny < 0 || nx < 0) continue;
             if(visited[nx][ny]) continue;
+<<<<<<< HEAD
             if(map[nx][ny].equals(".")) {
 
                 dfs(nx, ny);
@@ -77,6 +92,12 @@ public class boj3109빵집 {
                     return;
                 }
             }
+=======
+            if(map[nx][ny].equals("x")) continue;
+
+            visited[nx][ny] = true;
+            dfs(nx, ny);
+>>>>>>> origin/master
         }
     }
 }
