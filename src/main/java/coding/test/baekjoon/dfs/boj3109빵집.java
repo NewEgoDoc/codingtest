@@ -52,6 +52,7 @@ public class boj3109빵집 {
             System.out.println();
         }
 
+
         System.out.println(count);
     }
 
