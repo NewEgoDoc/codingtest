@@ -28,13 +28,15 @@ public class boj2468안전영역 {
             }
         }
 
+
+
         count = 0;
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                dfs(new int[]{i, j});
-            }
-        }
+//        for (int i = 0; i < N; i++) {
+//            for (int j = 0; j < N; j++) {
+//                dfs(new int[]{i, j});
+//            }
+//        }
 
         System.out.println(count);
         for (int i = 0; i < N; i++) {
